@@ -1,0 +1,20 @@
+.nav_element {
+    padding: 10px 20px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.nav_element:hover {
+    background-color: #333333;
+}
+
+#header_name {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-right: 20px;
+    vertical-align: center;
+}
+
+#navbar {
+    padding-left: 10px;
+}
