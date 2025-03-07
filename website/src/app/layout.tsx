@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>VanishHive</title>
+        {/* <link rel="icon" href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/c252531d54ac77f3a1cbbec472898065e5d7fdee_logo-removebg-preview.png"></link> */}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
