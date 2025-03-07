@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #adadad;
 }
 
 @theme inline {
@@ -14,13 +14,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #adadad;
     --foreground: #ededed;
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: #000;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.py-2.px-3.font-medium.text-sm{
+  width: 250px !important;
 }
