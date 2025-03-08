@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "VanishHive",
+  "short_name": "V-H",
+  "version": "0.0.1",
+  "description": "Swarm away unwanted data and scams, vanishing threats through collective AI power",
+  "icons": {
+    "16": "/icons/icon16.png",
+    "32": "/icons/icon32.png",
+    "48": "/icons/icon48.png",
+    "192": "/icons/icon192.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.google.com/mail/*", "*://*.outlook.com/*", "*://*.mail.google.com/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "host_permissions": [
+    "*://*.google.com/*",
+    "*://*.gmail.com/*",
+    "*://*.mail.google.com/*",
+    "*://*.outlook.com/*",
+    "*://*.live.com/*",
+    "*://*.office.com/*",
+    "*://*.yahoo.com/*",
+    "*://*.proton.me/*"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs"
+  ]
+}
