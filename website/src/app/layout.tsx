@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ImageMetadataViewer from './page';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +29,9 @@ export default function RootLayout({
         <title>VanishHive</title>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900`}
       >
+        {/* <ImageMetadataViewer/> */}
         {children}
       </body>
     </html>
