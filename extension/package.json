@@ -1,24 +1,32 @@
 {
-  "name": "extension",
-  "version": "0.1.0",
-  "private": true,
+  "name": "VanishHive",
+  "version": "0.0.1",
+  "description": "Swarm away unwanted data and scams, vanishing threats through collective AI power",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "npm run prep",
+    "prep": "npm run exp && node out.js",
+    "exp": "next build && next export",
+    "run": "next start",
+    "dev": "next dev"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.2.1"
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "glob": "^10.2.3",
+    "groq-sdk": "^0.15.0",
+    "next": "^13.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.12"
   }
 }
