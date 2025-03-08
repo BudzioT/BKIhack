@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { analyzeEmailSecurity } from "../../services/groqService";
 
 export default function EmailPage() {
     const [emailContent, setEmailContent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [debugInfo, setDebugInfo] = useState({});
+    const [securityAnalysis, setSecurityAnalysis] = useState(null);
+    const [analyzeLoading, setAnalyzeLoading] = useState(false);
 
     useEffect(() => {
         // Keep popup open in Firefox by preventing focus loss
@@ -56,7 +59,7 @@ export default function EmailPage() {
                     try {
                         const results = await new Promise((resolve, reject) => {
                             api.scripting.executeScript({
-                                target: { tabId: currentTab.id },
+                                target: {tabId: currentTab.id},
                                 func: () => {
                                     // More specific extraction function
                                     try {
@@ -79,14 +82,11 @@ export default function EmailPage() {
                                             emailData.emailContentExists = !!emailContentElement;
 
                                             if (emailContentElement) {
-                                                // Get just the email text content
                                                 emailData.bodyText = emailContentElement.innerText.substring(0, 200) + "...";
 
-                                                // Get email subject if available
                                                 const subjectElement = document.querySelector('h2[data-thread-perm-id]');
                                                 emailData.subject = subjectElement ? subjectElement.textContent : 'Unknown Subject';
 
-                                                // Get sender information if available
                                                 const senderElement = document.querySelector('span[email]');
                                                 emailData.sender = senderElement ? senderElement.getAttribute('email') : 'Unknown Sender';
                                                 emailData.senderName = senderElement ? senderElement.textContent : 'Unknown';
@@ -97,7 +97,7 @@ export default function EmailPage() {
 
                                         return emailData;
                                     } catch (err) {
-                                        return { error: err.message };
+                                        return {error: err.message};
                                     }
                                 }
                             }, (results) => {
@@ -112,7 +112,22 @@ export default function EmailPage() {
                         setDebugInfo(prev => ({...prev, scriptResults: results}));
 
                         if (results && results[0] && results[0].result) {
-                            setEmailContent(results[0].result);
+                            const emailData = results[0].result;
+                            setEmailContent(emailData);
+
+                            // If we have email content, analyze it
+                            if (emailData.subject || emailData.bodyText) {
+                                setAnalyzeLoading(true);
+                                analyzeEmailSecurity(emailData)
+                                    .then(analysis => {
+                                        setSecurityAnalysis(analysis);
+                                        setAnalyzeLoading(false);
+                                    })
+                                    .catch(err => {
+                                        setError("Security analysis error: " + err.message);
+                                        setAnalyzeLoading(false);
+                                    });
+                            }
                         } else {
                             setEmailContent("No email content detected.");
                         }
@@ -145,7 +160,7 @@ export default function EmailPage() {
     }, []);
 
     return (
-        <div id="email_page" style={{ padding: '1rem', maxWidth: '600px', minHeight: '300px' }}>
+        <div id="email_page" style={{padding: '1rem', maxWidth: '600px', minHeight: '300px'}}>
             <h4>Email Security Check</h4>
             <p>Stay safe and let VanishHive check your email against scams, phishing attempts and more!</p>
 
@@ -156,19 +171,78 @@ export default function EmailPage() {
                 </div>
             )}
 
+            {/* Security Analysis Display */}
+            {analyzeLoading && <p>Analyzing email security...</p>}
+
+            {securityAnalysis && (
+                <div className="security-analysis" style={{
+                    marginTop: '15px',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    backgroundColor: securityAnalysis.isSafe ? '#eefbf1' : '#fbeeee',
+                    border: `1px solid ${securityAnalysis.isSafe ? '#4caf50' : '#f44336'}`
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '10px'
+                    }}>
+                        {securityAnalysis.isSafe ? (
+                            <div style={{
+                                color: '#4caf50',
+                                fontSize: '24px',
+                                marginRight: '10px'
+                            }}>✓</div>
+                        ) : (
+                            <div style={{
+                                color: '#f44336',
+                                fontSize: '24px',
+                                marginRight: '10px'
+                            }}>✗</div>
+                        )}
+                        <h5 style={{margin: 0}}>
+                            {securityAnalysis.isSafe ? 'This email appears safe' : 'This email may be dangerous'}
+                        </h5>
+                    </div>
+
+                    <div style={{marginBottom: '10px'}}>
+                        <strong>Threat Level:</strong>
+                        <div style={{
+                            width: '100%',
+                            height: '10px',
+                            backgroundColor: '#e0e0e0',
+                            borderRadius: '5px',
+                            overflow: 'hidden',
+                            marginTop: '5px'
+                        }}>
+                            <div style={{
+                                width: `${securityAnalysis.threatLevel * 10}%`,
+                                height: '100%',
+                                backgroundColor: getThreatLevelColor(securityAnalysis.threatLevel)
+                            }}></div>
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '12px',
+                            marginTop: '3px'
+                        }}>
+                            <span>Safe (0)</span>
+                            <span>Dangerous (10)</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>Analysis:</strong>
+                        <p>{securityAnalysis.reasoning}</p>
+                    </div>
+                </div>
+            )}
+
             {emailContent && (
                 <div className="email-content-container">
                     <h5>Extracted Email Content:</h5>
-                    <div className="email-content" style={{
-                        maxHeight: '400px',
-                        overflow: 'auto',
-                        border: '1px solid #ccc',
-                        padding: '10px',
-                        marginTop: '10px',
-                        backgroundColor: '#f9f9f9'
-                    }}>
-                        <pre>{JSON.stringify(emailContent, null, 2)}</pre>
-                    </div>
+                    {/* Email content display */}
                 </div>
             )}
 
@@ -181,7 +255,13 @@ export default function EmailPage() {
             </div>
 
             {/* Add a hidden div with height to keep popup open */}
-            <div style={{ height: '300px' }}></div>
+            <div style={{height: '300px'}}></div>
         </div>
     );
+}
+
+function getThreatLevelColor(level) {
+    if (level <= 3) return '#4caf50'; // Green for low threat
+    if (level <= 6) return '#ff9800'; // Orange for medium threat
+    return '#f44336'; // Red for high threat
 }

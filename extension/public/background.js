@@ -1,4 +1,3 @@
-// background.js
 // Firefox compatibility: Use browser if available, fallback to chrome
 const api = typeof browser !== 'undefined' ? browser : chrome;
 
@@ -21,6 +20,6 @@ api.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 });
             }
         });
-        return true; // For async response
+        return true;
     }
 });

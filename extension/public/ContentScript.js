@@ -1,6 +1,3 @@
-// contentScript.js
-console.log("VanishHive content script loaded");
-
 // Firefox compatibility: Use browser if available, fallback to chrome
 const api = typeof browser !== 'undefined' ? browser : chrome;
 
@@ -11,7 +8,6 @@ api.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const emailData = extractEmailContent();
         sendResponse(emailData);
     }
-    // Always return true for async response
     return true;
 });
 
