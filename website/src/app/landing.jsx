@@ -125,7 +125,7 @@ export default function Landing() {
                     </div>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
-                            <h3 className="text-2xl font-semibold">Virus checker</h3>
+                            <h3 className="text-2xl font-semibold">Virus scanner</h3>
                             <p className="">See metadata associated with a file you upload and delete it</p>
                             <Link href="/virustotal">
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
@@ -141,7 +141,7 @@ export default function Landing() {
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
-                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9a214b4db2ac4bc491761bb8c94494a614a859c5_image.png" alt="" className="rounded-lg" />
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/74fa205892d759a0275d77d2197919a34d73597a_image.png" alt="" className="rounded-lg" />
                     </div>
                 </div>
             </main>
