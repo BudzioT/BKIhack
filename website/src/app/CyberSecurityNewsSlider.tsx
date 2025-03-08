@@ -104,7 +104,7 @@ const CyberSecurityNewsSlider = () => {
                 <div
                   key={item.id}
                   className={`absolute inset-0 transition-opacity duration-500 p-6 ${
-                    index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 z-0'
+                    index === currentSlide ? 'opacity-100 z-1' : 'opacity-0 z-0'
                   }`}
                 >
                   <div className="flex flex-col h-full justify-around">

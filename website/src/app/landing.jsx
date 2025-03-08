@@ -85,8 +85,8 @@ export default function Landing() {
                     <h1 className="text-8xl font-bold">Welcome to <br /> Vanish<span className="text-amber-400">Hive!</span></h1>
                     <p className="text-2xl py-4">Your place to stay safe on the web</p>
                     <div>
-                        <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" />
-                        <input type="button" value="Get chrome extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" />
+                        <a href="#tools" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" >Try it out</a>
+                        <a className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" >Get chrome extension</a>
                     </div>
                 </div>
                 <div className="flex flex-col justify-center place-items-center w-4/5">
@@ -97,7 +97,7 @@ export default function Landing() {
                 </div>
                 <News />
                 <div className="w-4/5 mx-auto">
-                    <h2 className="text-4xl font-semibold underline pt-5 pb-5 text-center">Tools</h2>
+                    <h2 className="text-4xl font-semibold underline pt-5 pb-5 text-center" id="tools">Tools</h2>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
                             <h3 className="text-2xl font-semibold">Metadata removal</h3>
@@ -112,12 +112,14 @@ export default function Landing() {
                         <div>
                             <h3 className="text-2xl font-semibold">AI chat</h3>
                             <p className="">Get cybersecurity advice and assistance from our AI helper</p>
+                            <Link href="/">
                             <input 
                                 type="button" 
                                 value="Try it out" 
                                 className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8"
                                 onClick={toggleIsVisible} 
                             />
+                            </Link>
                         </div>
                         <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
                     </div>
@@ -125,7 +127,9 @@ export default function Landing() {
                         <div>
                             <h3 className="text-2xl font-semibold">Virustotal api</h3>
                             <p className="">See metadata associated with a file you upload and delete it</p>
+                            <Link href="/virustotal">
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
+                            </Link>
                         </div>
                         <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
                     </div>
@@ -133,7 +137,9 @@ export default function Landing() {
                         <div>
                             <h3 className="text-2xl font-semibold">Password strengh checker</h3>
                             <p className="">See metadata associated with a file you upload and delete it</p>
+                            <Link href="/pass">
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
+                            </Link>
                         </div>
                         <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
                     </div>
