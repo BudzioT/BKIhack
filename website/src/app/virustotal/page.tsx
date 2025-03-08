@@ -518,7 +518,8 @@ const VirusTotalScanner: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+    <div className='w-full h-svh flex align-center'>
+    <div className="p-6 max-w-4xl flex-1 m-auto bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6">VirusTotal Scanner</h1>
     
       
@@ -598,6 +599,7 @@ const VirusTotalScanner: React.FC = () => {
       
       {renderResultsContent()}
      
+    </div>
     </div>
   );
 };
