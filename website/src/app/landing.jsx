@@ -147,7 +147,7 @@ export default function Landing() {
             </main>
             
             {isVisible && 
-                <div className="fixed right-6 bottom-1/5 mb-5 bg-gray-800 h-2/3 w-1/3 sm:w-96 rounded-xl shadow-lg border-2 border-amber-400 overflow-hidden flex flex-col">
+                <div className="fixed right-6 bottom-1/5 mb-5 bg-gray-800 h-2/3 w-1/3 sm:w-96 rounded-xl shadow-lg border-2 border-amber-400 overflow-hidden flex flex-col z-2">
                     <div className="bg-amber-500 text-white p-3 flex justify-between items-center">
                         <h2 className="text-xl font-semibold">VanishHive AI Assistant</h2>
                         <button 
