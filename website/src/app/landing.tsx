@@ -1,4 +1,5 @@
 import Link from "next/link";
+import News from './CyberSecurityNewsSlider';
 
 export default function Landing() {
     return (
@@ -17,8 +18,9 @@ export default function Landing() {
                     <p className="text-gray-200 font-semibold py-6 px-12 font-xl">In a world where your digital footprint can feel like a shadow you can’t escape, VanishHive is here to light the way. We believe that staying safe online isn’t just about protection – it’s about empowerment. With the right tools and knowledge, you can take control of your digital life, one step at a time. Our goal? To make cybersecurity not just a necessity, but a superpower.</p>
                 </div>
             </div>
+            <News/>
             <div className="w-4/5 mx-auto">
-                <h2 className="text-4xl font-semibold underline pt-20 pb-5 text-center">Tools</h2>
+                <h2 className="text-4xl font-semibold underline pt-5 pb-5 text-center">Tools</h2>
                 <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                     <div>
                         <h3 className="text-2xl font-semibold">Metadata removal</h3>

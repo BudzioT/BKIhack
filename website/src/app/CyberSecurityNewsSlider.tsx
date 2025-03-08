@@ -73,7 +73,7 @@ const CyberSecurityNewsSlider = () => {
 
   if (loading) {
     return (
-      <div className="w-full max-w-3xl mx-auto p-6 flex items-center justify-center h-64 bg-gray-100 rounded-lg">
+      <div className="w-full max-w-3xl mx-auto p-6 flex items-center justify-center h-64 rounded-lg">
         <div className="text-gray-500">Loading cybersecurity news...</div>
       </div>
     );
@@ -96,92 +96,94 @@ const CyberSecurityNewsSlider = () => {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto relative">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="relative h-96">
-          {news.map((item, index) => (
-            <div
-              key={item.id}
-              className={`absolute inset-0 transition-opacity duration-500 p-6 ${
-                index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-              }`}
-            >
-              <div className="flex flex-col h-full">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-blue-600">{item.source}</span>
-                  <span className="text-sm text-gray-500">{item.date}</span>
-                </div>
-                
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">{item.title}</h2>
-                
-                {/* Article content with image */}
-                <div className="flex flex-grow gap-4 mb-4">
-                  {item.imageUrl && !imageErrors[item.id] ? (
-                    <div className="flex-shrink-0 relative w-40 h-32 bg-gray-100">
-                      <Image 
-                        src={item.imageUrl}
-                        alt={item.title}
-                        fill
-                        className="object-cover rounded-md"
-                        onError={() => handleImageError(item.id)}
-                        unoptimized={true}
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                      />
+    <div className='w-4/5 flex justify-center'>
+        <div className="w-4/5 relative mt-15 mb-5">
+          <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="relative h-96">
+              {news.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`absolute inset-0 transition-opacity duration-500 p-6 ${
+                    index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 z-0'
+                  }`}
+                >
+                  <div className="flex flex-col h-full justify-around">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-amber-500 font-semibold">{item.source}</span>
+                      <span className="text-sm text-gray-200">{item.date}</span>
                     </div>
-                  ) : (
-                    <div className="flex-shrink-0 bg-gray-200 w-40 h-32 rounded-md flex items-center justify-center">
-                      <span className="text-gray-400 text-xs">No image available</span>
+                    
+                    <h2 className="text-2xl font-bold mb-4 text-gray-200">{item.title}</h2>
+                    
+                    {/* Article content with image */}
+                    <div className="flex gap-4">
+                      {item.imageUrl && !imageErrors[item.id] ? (
+                        <div className="flex-shrink-0 relative w-40 h-32">
+                          <Image 
+                            src={item.imageUrl}
+                            alt={item.title}
+                            fill
+                            className="object-cover rounded-lg"
+                            onError={() => handleImageError(item.id)}
+                            unoptimized={true}
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex-shrink-0 bg-gray-200 w-40 h-32 rounded-md flex items-center justify-center">
+                          <span className="text-gray-400 text-xs">No image available</span>
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <p className="text-gray-200">{item.summary}</p>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex-1">
-                    <p className="text-gray-600">{item.summary}</p>
+                    
+                    <a
+                      href={item.url}
+                      className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-3xl hover:bg-amber-700 transition-all self-end"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read full article
+                    </a>
                   </div>
                 </div>
-                
-                <a
-                  href={item.url}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors self-start"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Read full article
-                </a>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-        
-        <div className="flex justify-between p-4 bg-gray-50 border-t border-gray-200">
-          <button
-            onClick={prevSlide}
-            className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          
-          <div className="flex items-center space-x-2">
-            {news.map((_, index) => (
+            
+            <div className="flex justify-between p-4 bg-gray-700 border-t ">
               <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full ${
-                  index === currentSlide ? 'bg-blue-600' : 'bg-gray-300'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+                onClick={prevSlide}
+                className="p-2 rounded-full hover:bg-gray-600 transition-colors"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              
+              <div className="flex items-center space-x-2">
+                {news.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full ${
+                      index === currentSlide ? 'bg-amber-500' : 'bg-gray-300'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+              
+              <button
+                onClick={nextSlide}
+                className="p-2 rounded-full hover:bg-gray-600 transition-colors"
+                aria-label="Next slide"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
           </div>
-          
-          <button
-            onClick={nextSlide}
-            className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-            aria-label="Next slide"
-          >
-            <ChevronRight size={24} />
-          </button>
         </div>
-      </div>
     </div>
   );
 };
