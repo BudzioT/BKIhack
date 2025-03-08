@@ -27,12 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>VanishHive</title>
-        {/* <link rel="icon" href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/c252531d54ac77f3a1cbbec472898065e5d7fdee_logo-removebg-preview.png"></link> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <ImageMetadataViewer/> */}
         {children}
       </body>
     </html>
