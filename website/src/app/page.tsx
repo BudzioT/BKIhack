@@ -1,386 +1,3 @@
-// "use client";
-
-// import React, { useState, useRef, useEffect } from 'react';
-// import * as exifr from 'exifr';
-
-// interface MetadataCategory {
-//   title: string;
-//   items: Array<{ key: string; value: string | number }>;
-// }
-
-// const ImageMetadataViewer: React.FC = () => {
-//   const [metadataCategories, setMetadataCategories] = useState<MetadataCategory[]>([]);
-//   const [imageUrl, setImageUrl] = useState<string | null>(null);
-//   const [isLoading, setIsLoading] = useState<boolean>(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const fileInputRef = useRef<HTMLInputElement>(null);
-//   const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
-
-//   // Format GPS coordinates from decimal to degrees, minutes, seconds
-//   const formatGPSCoordinates = (decimal: number, isLatitude: boolean): string => {
-//     const absolute = Math.abs(decimal);
-//     const degrees = Math.floor(absolute);
-//     const minutesNotTruncated = (absolute - degrees) * 60;
-//     const minutes = Math.floor(minutesNotTruncated);
-//     const seconds = ((minutesNotTruncated - minutes) * 60).toFixed(2);
-    
-//     const direction = isLatitude 
-//       ? (decimal >= 0 ? "N" : "S") 
-//       : (decimal >= 0 ? "E" : "W");
-      
-//     return `${degrees}° ${minutes}' ${seconds}" ${direction}`;
-//   };
-
-//   // Format date from EXIF format
-//   const formatExifDate = (dateString: string): string => {
-//     try {
-//       const date = new Date(dateString);
-//       return date.toLocaleString();
-//     } catch (e) {
-//       return dateString;
-//     }
-//   };
-
-//   // Format value based on key name
-//   const formatValue = (key: string, value: any): string | number => {
-//     if (value === undefined || value === null) return "Not available";
-    
-//     // Handle arrays
-//     if (Array.isArray(value)) {
-//       return value.join(", ");
-//     }
-    
-//     // Handle objects
-//     if (typeof value === 'object' && value !== null) {
-//       return JSON.stringify(value);
-//     }
-
-//     // Format specific types of data
-//     if (key.toLowerCase().includes('date')) {
-//       return formatExifDate(value.toString());
-//     }
-    
-//     if (key === 'exposureTime') {
-//       // Convert to fraction format (e.g., 1/125)
-//       const denominator = Math.round(1 / value);
-//       return denominator > 1 ? `1/${denominator}s` : `${value}s`;
-//     }
-    
-//     if (key === 'fNumber') {
-//       return `f/${value}`;
-//     }
-    
-//     if (key === 'focalLength') {
-//       return `${value}mm`;
-//     }
-    
-//     if (key === 'iso' || key === 'ISO') {
-//       return `ISO ${value}`;
-//     }
-    
-//     return value;
-//   };
-
-//   // Toggle category expansion
-//   const toggleCategory = (category: string) => {
-//     setExpandedCategories(prev => ({
-//       ...prev,
-//       [category]: !prev[category]
-//     }));
-//   };
-
-//   const extractMetadata = async (file: File) => {
-//     setIsLoading(true);
-//     setError(null);
-//     setMetadataCategories([]);
-    
-//     // Create URL for preview
-//     const fileUrl = URL.createObjectURL(file);
-//     setImageUrl(fileUrl);
-
-//     try {
-//       // Get basic file info
-//       const basicInfo = {
-//         title: "File Information",
-//         items: [
-//           { key: 'File Name', value: file.name },
-//           { key: 'File Size', value: `${(file.size / 1024).toFixed(2)} KB` },
-//           { key: 'File Type', value: file.type },
-//           { key: 'Last Modified', value: new Date(file.lastModified).toLocaleString() },
-//         ]
-//       };
-
-//       // Get image dimensions
-//       const img = new Image();
-//       const getDimensions = new Promise<MetadataCategory>((resolve) => {
-//         img.onload = () => {
-//           resolve({
-//             title: "Image Dimensions",
-//             items: [
-//               { key: 'Width', value: `${img.width} px` },
-//               { key: 'Height', value: `${img.height} px` },
-//               { key: 'Aspect Ratio', value: `${(img.width / img.height).toFixed(2)}` },
-//             ]
-//           });
-//         };
-//         img.onerror = () => {
-//           resolve({
-//             title: "Image Dimensions",
-//             items: [{ key: 'Error', value: 'Could not load image dimensions' }]
-//           });
-//         };
-//         img.src = fileUrl;
-//       });
-
-//       // Get all metadata using exifr
-//       const options = {
-//         // Include these blocks
-//         tiff: true,
-//         exif: true,
-//         gps: true,
-//         iptc: true,
-//         xmp: true,
-//         icc: true,
-//         makerNote: true,
-//         jfif: true,
-//         ihdr: true // PNG metadata
-//       };
-
-//       const allMetadata = await exifr.parse(file, options);
-//       const dimensionsData = await getDimensions;
-      
-//       // Create categories for different types of metadata
-//       const categories: MetadataCategory[] = [basicInfo, dimensionsData];
-      
-//       if (allMetadata) {
-//         // Create a map to organize metadata by category
-//         const metadataMap: Record<string, any> = {
-//           "EXIF Information": {},
-//           "Camera Information": {},
-//           "Image Settings": {},
-//           "GPS Information": {},
-//           "IPTC Information": {},
-//           "XMP Information": {},
-//           "ICC Profile": {},
-//           "Maker Notes": {},
-//           "Other Metadata": {}
-//         };
-
-//         // Sort metadata into appropriate categories
-//         for (const [key, value] of Object.entries(allMetadata)) {
-//           if (value === undefined || value === null) continue;
-          
-//           // Camera info
-//           if (['Make', 'Model', 'Software', 'CameraOwnerName', 'BodySerialNumber', 'LensMake', 'LensModel', 'LensSerialNumber'].includes(key)) {
-//             metadataMap["Camera Information"][key] = value;
-//           } 
-//           // GPS data
-//           else if (['latitude', 'longitude', 'altitude', 'GPSLatitudeRef', 'GPSLongitudeRef', 'GPSAltitudeRef', 'GPSDateStamp', 'GPSTimeStamp', 'GPSProcessingMethod'].includes(key)) {
-//             metadataMap["GPS Information"][key] = value;
-//           } 
-//           // Image settings
-//           else if (['ExposureTime', 'exposureTime', 'FNumber', 'fNumber', 'ISO', 'ISOSpeedRatings', 'ShutterSpeedValue', 'ApertureValue', 'ExposureBiasValue', 'MaxApertureValue', 'MeteringMode', 'Flash', 'FocalLength', 'focalLength', 'WhiteBalance', 'ExposureMode', 'ExposureProgram'].includes(key)) {
-//             metadataMap["Image Settings"][key] = value;
-//           } 
-//           // IPTC data
-//           else if (key.startsWith('iptc') || ['ObjectName', 'Keywords', 'Caption-Abstract', 'By-line', 'Copyright', 'Credit', 'Source', 'City', 'Country', 'Category'].includes(key)) {
-//             metadataMap["IPTC Information"][key] = value;
-//           } 
-//           // XMP data
-//           else if (key.startsWith('xmp') || key.startsWith('Xmp')) {
-//             metadataMap["XMP Information"][key] = value;
-//           } 
-//           // ICC data
-//           else if (key.startsWith('icc') || key.startsWith('ICC')) {
-//             metadataMap["ICC Profile"][key] = value;
-//           } 
-//           // Maker notes
-//           else if (key.startsWith('MakerNote') || key.startsWith('makerNote')) {
-//             metadataMap["Maker Notes"][key] = value;
-//           } 
-//           // EXIF data (catch-all for remaining standard EXIF tags)
-//           else if (key.startsWith('exif') || ['CreateDate', 'ModifyDate', 'DateTimeOriginal', 'OffsetTime', 'ExifVersion', 'ComponentsConfiguration', 'CompressedBitsPerPixel', 'SubjectDistance', 'SubjectArea'].includes(key)) {
-//             metadataMap["EXIF Information"][key] = value;
-//           } 
-//           // Everything else
-//           else {
-//             metadataMap["Other Metadata"][key] = value;
-//           }
-//         }
-
-//         // Special handling for GPS to show formatted coordinates
-//         if (allMetadata.latitude !== undefined && allMetadata.longitude !== undefined) {
-//           metadataMap["GPS Information"]["Formatted Latitude"] = formatGPSCoordinates(allMetadata.latitude, true);
-//           metadataMap["GPS Information"]["Formatted Longitude"] = formatGPSCoordinates(allMetadata.longitude, false);
-          
-//           // Add Google Maps link
-//           metadataMap["GPS Information"]["Maps Link"] = `https://maps.google.com/?q=${allMetadata.latitude},${allMetadata.longitude}`;
-//         }
-
-//         // Convert the map to our categories format
-//         for (const [categoryName, items] of Object.entries(metadataMap)) {
-//           const itemsArray = Object.entries(items).map(([key, value]) => ({
-//             key,
-//             value: formatValue(key, value)
-//           }));
-          
-//           if (itemsArray.length > 0) {
-//             categories.push({
-//               title: categoryName,
-//               items: itemsArray
-//             });
-//           }
-//         }
-//       }
-
-//       // Set initial expanded state for all categories
-//       const initialExpandedState = categories.reduce((acc, category) => {
-//         acc[category.title] = true; // Start with all expanded
-//         return acc;
-//       }, {} as Record<string, boolean>);
-      
-//       setExpandedCategories(initialExpandedState);
-//       setMetadataCategories(categories);
-//     } catch (err) {
-//       console.error('Error reading metadata:', err);
-//       setError('Error reading metadata: ' + (err instanceof Error ? err.message : String(err)));
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = event.target.files;
-//     if (files && files.length > 0) {
-//       extractMetadata(files[0]);
-//     }
-//   };
-
-//   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-//     event.preventDefault();
-//   };
-
-//   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-//     event.preventDefault();
-//     const files = event.dataTransfer.files;
-//     if (files && files.length > 0) {
-//       extractMetadata(files[0]);
-//     }
-//   };
-
-//   const triggerFileInput = () => {
-//     if (fileInputRef.current) {
-//       fileInputRef.current.click();
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-7xl mx-auto p-4">
-//       <h1 className="text-2xl font-bold mb-4">Comprehensive Image Metadata Viewer</h1>
-      
-//       <input
-//         type="file"
-//         accept="image/*"
-//         onChange={handleFileChange}
-//         ref={fileInputRef}
-//         className="hidden"
-//       />
-      
-//       <div 
-//         className="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 text-center cursor-pointer"
-//         onClick={triggerFileInput}
-//         onDragOver={handleDragOver}
-//         onDrop={handleDrop}
-//       >
-//         <div className="text-gray-500">
-//           <p className="mb-2">Click to select or drag and drop an image</p>
-//           <p className="text-sm">Supported formats: JPG, PNG, TIFF, HEIC, WebP</p>
-//         </div>
-//       </div>
-      
-//       {isLoading && (
-//         <div className="text-center py-4">
-//           <p>Extracting metadata...</p>
-//         </div>
-//       )}
-      
-//       {error && (
-//         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-//           {error}
-//         </div>
-//       )}
-      
-//       {imageUrl && !isLoading && (
-//         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//           <div className="md:col-span-1">
-//             <h2 className="text-xl font-semibold mb-3">Image Preview</h2>
-//             <div className="border rounded-lg overflow-hidden">
-//               <img 
-//                 src={imageUrl} 
-//                 alt="Selected image preview" 
-//                 className="max-w-full h-auto"
-//               />
-//             </div>
-//           </div>
-          
-//           <div className="md:col-span-2">
-//             <h2 className="text-xl font-semibold mb-3">Metadata</h2>
-//             {metadataCategories.length > 0 ? (
-//               <div className="space-y-4">
-//                 {metadataCategories.map((category, categoryIndex) => (
-//                   <div key={categoryIndex} className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-//                     <div 
-//                       className="flex items-center justify-between bg-gray-100 p-3 cursor-pointer"
-//                       onClick={() => toggleCategory(category.title)}
-//                     >
-//                       <h3 className="font-medium">{category.title}</h3>
-//                       <span className="text-gray-500">
-//                         {expandedCategories[category.title] ? '▼' : '▶'}
-//                       </span>
-//                     </div>
-                    
-//                     {expandedCategories[category.title] && (
-//                       <div className="p-3">
-//                         <table className="w-full">
-//                           <tbody>
-//                             {category.items.map((item, itemIndex) => (
-//                               <tr key={itemIndex} className={itemIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-//                                 <td className="py-2 px-3 font-medium text-sm">{item.key}</td>
-//                                 <td className="py-2 px-3 text-sm break-words break-all">
-//                                   {typeof item.value === 'string' && item.value.startsWith('https://') ? (
-//                                     <a 
-//                                       href={item.value} 
-//                                       target="_blank" 
-//                                       rel="noopener noreferrer"
-//                                       className="text-blue-600 hover:underline"
-//                                     >
-//                                       Open in Google Maps
-//                                     </a>
-//                                   ) : (
-//                                     item.value
-//                                   )}
-//                                 </td>
-//                               </tr>
-//                             ))}
-//                           </tbody>
-//                         </table>
-//                       </div>
-//                     )}
-//                   </div>
-//                 ))}
-//               </div>
-//             ) : (
-//               <p className="text-gray-500">No metadata available</p>
-//             )}
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ImageMetadataViewer;
-
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -401,6 +18,7 @@ const ImageMetadataViewer: React.FC = () => {
   const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
   const [originalFile, setOriginalFile] = useState<File | null>(null);
   const imagePreviewRef = useRef<HTMLDivElement>(null);
+  const [expandedValues, setExpandedValues] = useState<{ [key: string]: boolean }>({});
 
   // Format GPS coordinates from decimal to degrees, minutes, seconds
   const formatGPSCoordinates = (decimal: number, isLatitude: boolean): string => {
@@ -475,12 +93,21 @@ const ImageMetadataViewer: React.FC = () => {
     }));
   };
 
+  // Toggle value expansion
+  const toggleValueExpansion = (key: string) => {
+    setExpandedValues(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   const extractMetadata = async (file: File) => {
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
     setMetadataCategories([]);
     setOriginalFile(file);
+    setExpandedValues({}); // Reset expanded values
     
     // Create URL for preview
     const fileUrl = URL.createObjectURL(file);
@@ -634,7 +261,8 @@ const ImageMetadataViewer: React.FC = () => {
 
       // Set initial expanded state for all categories
       const initialExpandedState = categories.reduce((acc, category) => {
-        acc[category.title] = true; // Start with all expanded
+        // Set "Other Metadata" to be collapsed by default
+        acc[category.title] = category.title !== "Other Metadata";
         return acc;
       }, {} as Record<string, boolean>);
       
@@ -932,25 +560,48 @@ const ImageMetadataViewer: React.FC = () => {
                         <div className="p-3">
                           <table className="w-full">
                             <tbody>
-                              {category.items.map((item, itemIndex) => (
-                                <tr key={itemIndex} className={itemIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                  <td className="py-2 px-3 font-medium text-sm">{item.key}</td>
-                                  <td className="py-2 px-3 text-sm break-words break-all">
-                                    {typeof item.value === 'string' && item.value.startsWith('https://') ? (
-                                      <a 
-                                        href={item.value} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="text-blue-600 hover:underline"
-                                      >
-                                        Open in Google Maps
-                                      </a>
-                                    ) : (
-                                      item.value
-                                    )}
-                                  </td>
-                                </tr>
-                              ))}
+                              {category.items.map((item, itemIndex) => {
+                                const valueString = item.value.toString();
+                                const isLongValue = valueString.length > 200;
+                                const valueId = `${category.title}-${item.key}-${itemIndex}`;
+                                const isExpanded = expandedValues[valueId];
+                                const displayValue = isLongValue && !isExpanded 
+                                  ? valueString.substring(0, 200) + "..." 
+                                  : valueString;
+                                
+                                return (
+                                  <tr key={itemIndex} className={itemIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                    <td className="py-2 px-3 font-medium text-sm">{item.key}</td>
+                                    <td className="py-2 px-3 text-sm break-words">
+                                      {typeof valueString === 'string' && valueString.startsWith('https://') ? (
+                                        <a 
+                                          href={valueString} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer"
+                                          className="text-blue-600 hover:underline"
+                                        >
+                                          Open in Google Maps
+                                        </a>
+                                      ) : (
+                                        <div>
+                                          <span className="break-all">{displayValue}</span>
+                                          {isLongValue && (
+                                            <button 
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleValueExpansion(valueId);
+                                              }}
+                                              className="ml-2 text-blue-600 hover:underline text-xs font-medium"
+                                            >
+                                              {isExpanded ? "Show Less" : "Show All"}
+                                            </button>
+                                          )}
+                                        </div>
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                             </tbody>
                           </table>
                         </div>
