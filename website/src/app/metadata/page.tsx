@@ -459,7 +459,7 @@ const ImageMetadataViewer: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Comprehensive Image Metadata Viewer</h1>
+      <h1 className="text-2xl font-bold mb-4 text-amber-400 text-center">Comprehensive Image Metadata Viewer</h1>
       
       <input
         type="file"
@@ -477,7 +477,7 @@ const ImageMetadataViewer: React.FC = () => {
       >
         <div className="text-gray-500">
           <p className="mb-2">Click to select or drag and drop an image</p>
-          <p className="text-sm">Supported formats: JPG, PNG, TIFF, HEIC, WebP</p>
+          <p className="text-sm">Supported formats: JPG, PNG, TIFF, HEIC</p>
         </div>
       </div>
       
@@ -502,7 +502,7 @@ const ImageMetadataViewer: React.FC = () => {
       {imageUrl && !isLoading && (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Image Preview & Metadata</h2>
+            <h2 className="text-xl font-semibold text-amber-400">Image Preview & Metadata</h2>
             <button
               onClick={handleDeleteMetadata}
               className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg flex items-center"
@@ -518,7 +518,7 @@ const ImageMetadataViewer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-1">
               <div ref={imagePreviewRef} className="z-10">
-                <h3 className="text-lg font-medium mb-3">Image Preview</h3>
+                <h3 className="text-lg font-medium mb-3 text-amber-400">Image Preview</h3>
                 <div className="border rounded-lg overflow-hidden">
                   <img 
                     src={imageUrl} 
@@ -530,7 +530,7 @@ const ImageMetadataViewer: React.FC = () => {
             </div>
             
             <div className="md:col-span-2">
-              <h3 className="text-lg font-medium mb-3">Metadata</h3>
+              <h3 className="text-lg font-medium mb-3 text-amber-400">Metadata</h3>
               {metadataCategories.length > 0 ? (
                 <div className="space-y-4">
                   {metadataCategories.map((category, categoryIndex) => (
