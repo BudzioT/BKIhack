@@ -531,9 +531,9 @@ const VirusTotalScanner: React.FC = () => {
               setInput('');
               setResults(null);
             }}
-            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 ${
               scanType === 'file' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-amber-500 text-white' 
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             }`}
           >
@@ -545,9 +545,9 @@ const VirusTotalScanner: React.FC = () => {
               setInput('');
               setResults(null);
             }}
-            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 ${
               scanType === 'url' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-amber-500 text-white' 
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             }`}
           >
@@ -559,9 +559,9 @@ const VirusTotalScanner: React.FC = () => {
               setInput('');
               setResults(null);
             }}
-            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            className={`px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 ${
               scanType === 'domain' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-amber-500 text-white' 
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             }`}
           >
@@ -578,13 +578,13 @@ const VirusTotalScanner: React.FC = () => {
             id="input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-grow p-2 border border-gray-300 rounded-l focus:ring-blue-500 focus:border-blue-500"
+            className="flex-grow p-2 border border-gray-300 rounded-l focus:ring-amber-600 focus:border-amber-600"
             placeholder={renderPlaceholderText()}
           />
           <button
             onClick={scanType === 'url' ? submitUrl : fetchVirusTotalData}
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-r hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="px-4 py-2 bg-amber-500 text-white rounded-r hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 disabled:opacity-50"
           >
             {loading ? 'Scanning...' : scanType === 'url' ? 'Submit & Scan' : 'Scan'}
           </button>

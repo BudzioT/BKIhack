@@ -106,7 +106,7 @@ export default function Landing() {
                                 <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
-                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/6d8bcb31446bbf8300cbb1168279d4acf6b94e67_image.png" alt="" className="rounded-lg" />
                     </div>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
@@ -131,7 +131,7 @@ export default function Landing() {
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
-                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/62fbd1500d63a7c28b44c110a3b2a611b7858995_image.png" alt="" className="rounded-lg" />
                     </div>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
@@ -141,7 +141,7 @@ export default function Landing() {
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
-                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9a214b4db2ac4bc491761bb8c94494a614a859c5_image.png" alt="" className="rounded-lg" />
                     </div>
                 </div>
             </main>
