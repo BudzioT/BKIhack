@@ -76,7 +76,7 @@ export default function SupportPage() {
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#414141',
+            backgroundColor: '##171717',
             borderRadius: '8px'
         }}>
             <h2 style={{ margin: '0 0 15px 0', color: '#f1f1f1' }}>VanishHive Support</h2>
