@@ -45,6 +45,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
+        setShowNetworkTraffic(false);
         setShowFeatures(true);
     }
 
@@ -54,6 +55,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
+        setShowNetworkTraffic(false);
         setShowMain(true);
     }
 
@@ -63,6 +65,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
+        setShowNetworkTraffic(false);
         setShowEmail(true);
     }
 
@@ -72,6 +75,7 @@ export default function Navbar() {
         setShowEmail(false);
         setShowAITest(false);
         setShowVirusCheck(false);
+        setShowNetworkTraffic(false);
         setShowSupport(true);
     }
 
@@ -81,6 +85,7 @@ export default function Navbar() {
         setShowEmail(false);
         setShowSupport(false);
         setShowVirusCheck(false);
+        setShowNetworkTraffic(false);
         setShowAITest(true);
     }
 
@@ -90,6 +95,7 @@ export default function Navbar() {
         setShowEmail(false);
         setShowSupport(false);
         setShowAITest(false);
+        setShowNetworkTraffic(false);
         setShowVirusCheck(true);
     }
 

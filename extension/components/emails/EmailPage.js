@@ -247,7 +247,7 @@ export default function EmailPage() {
             )}
 
             {/* Debug Info Section */}
-            <div style={{marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px'}}>
+            <div style={{marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px', color: 'white'}}>
                 <details>
                     <summary>Debug Information</summary>
                     <pre style={{fontSize: '12px'}}>{JSON.stringify(debugInfo, null, 2)}</pre>
