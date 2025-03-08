@@ -10,11 +10,16 @@ export default function EmailPage() {
     const [analyzeLoading, setAnalyzeLoading] = useState(false);
 
     useEffect(() => {
-        // Keep popup open in Firefox by preventing focus loss
-        document.body.addEventListener('mouseleave', (e) => {
+        const handleMouseLeave = (e) => {
             e.preventDefault();
             e.stopPropagation();
             return false;
+        };
+        document.body.addEventListener('mouseleave', handleMouseLeave);
+        document.body.addEventListener('blur', handleMouseLeave);
+
+        window.addEventListener('blur', () => {
+            setTimeout(() => window.focus(), 0);
         });
 
         const extractEmails = async () => {
@@ -150,12 +155,14 @@ export default function EmailPage() {
 
         // Start extraction with a slight delay to ensure popup is fully loaded
         setTimeout(() => {
-            extractEmails();
+            extractEmails().then();
         }, 100);
 
         // Return cleanup function
         return () => {
             document.body.removeEventListener('mouseleave');
+            document.body.removeEventListener('blur', handleMouseLeave);
+            window.removeEventListener('blur');
         };
     }, []);
 
