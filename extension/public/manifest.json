@@ -12,12 +12,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://mail.google.com/*"],
-      "js": ["contentScript.js"],
-      "run_at": "document_idle"
+      "matches": ["*://*.google.com/mail/*", "*://*.outlook.com/*", "*://*.mail.google.com/*"],
+      "js": ["contentScript.js"]
     }
   ],
-  "host_permissions": ["*://mail.google.com/*"],
+  "host_permissions": [
+    "*://*.google.com/*",
+    "*://*.gmail.com/*",
+    "*://*.mail.google.com/*",
+    "*://*.outlook.com/*",
+    "*://*.live.com/*",
+    "*://*.office.com/*",
+    "*://*.yahoo.com/*",
+    "*://*.proton.me/*"
+  ],
   "action": {
     "default_popup": "index.html"
   },
@@ -26,6 +34,7 @@
   },
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs"
   ]
 }
