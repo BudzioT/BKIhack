@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-const apiKey = process.env.VIRUSTOTAL_API_KEY || '';
 
 // Shared types
 interface ScanStats {
@@ -66,7 +65,7 @@ interface DomainResponse {
 type ScanType = 'file' | 'url' | 'domain';
 type ScanResponse = FileResponse | UrlResponse | DomainResponse;
 
-const VirusTotalScanner: React.FC = () => {
+export default function VirusTotalScanner() {
   const [input, setInput] = useState<string>('');
   const [results, setResults] = useState<ScanResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -136,35 +135,16 @@ const VirusTotalScanner: React.FC = () => {
     setError(null);
 
     try {
-      let endpoint = '';
-      let method = 'GET';
-      let body = undefined;
-
-      switch (scanType) {
-        case 'file':
-          endpoint = `https://www.virustotal.com/api/v3/files/${input}`;
-          break;
-        case 'url':
-          // For URLs, we first need to get the URL ID by submitting it
-          if (!isValidUrl(input)) {
-            throw new Error('Invalid URL format');
-          }
-          
-          const urlId = btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-          endpoint = `https://www.virustotal.com/api/v3/urls/${urlId}`;
-          break;
-        case 'domain':
-          endpoint = `https://www.virustotal.com/api/v3/domains/${input}`;
-          break;
-      }
-
-      const response = await fetch(endpoint, {
-        method,
+      const response = await fetch('/api/virustotal', {
+        method: 'POST',
         headers: {
-          'x-apikey': apiKey,
           'Content-Type': 'application/json'
         },
-        body
+        body: JSON.stringify({
+          action: 'get',
+          target: input,
+          scanType: scanType
+        })
       });
 
       if (!response.ok) {
@@ -190,18 +170,20 @@ const VirusTotalScanner: React.FC = () => {
     setError(null);
 
     try {
-      // First we submit the URL for analysis
-      const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
+      const submitResponse = await fetch('/api/virustotal', {
         method: 'POST',
         headers: {
-          'x-apikey': apiKey,
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         },
-        body: `url=${encodeURIComponent(input)}`
+        body: JSON.stringify({
+          action: 'submit',
+          target: input,
+          scanType: 'url'
+        })
       });
 
       if (!submitResponse.ok) {
-        throw new Error(`Error submitting URL: ${submitResponse.status} - ${submitResponse.statusText}`);
+        throw new Error(`Error submitting URL: ${submitResponse.status}`);
       }
 
       const submitData = await submitResponse.json();
@@ -209,27 +191,30 @@ const VirusTotalScanner: React.FC = () => {
 
       // Poll the analysis endpoint until it's complete
       let analysisComplete = false;
-      let analysisData;
       let attempts = 0;
-      
+
       while (!analysisComplete && attempts < 10) {
-        const analysisResponse = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
-          method: 'GET',
+        const analysisResponse = await fetch('/api/virustotal', {
+          method: 'POST',
           headers: {
-            'x-apikey': apiKey
-          }
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'analysis',
+            target: analysisId
+          })
         });
 
         if (!analysisResponse.ok) {
-          throw new Error(`Error checking analysis: ${analysisResponse.status} - ${analysisResponse.statusText}`);
+          throw new Error(`Error checking analysis: ${analysisResponse.status}`);
         }
 
-        analysisData = await analysisResponse.json();
+        const analysisData = await analysisResponse.json();
         if (analysisData.data.attributes.status === 'completed') {
           analysisComplete = true;
         } else {
           attempts++;
-          await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds before polling again
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
 
@@ -237,21 +222,7 @@ const VirusTotalScanner: React.FC = () => {
         throw new Error('Analysis timed out. Please try retrieving the results later.');
       }
 
-      // Now get the full URL report
-      const urlId = btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-      const urlResponse = await fetch(`https://www.virustotal.com/api/v3/urls/${urlId}`, {
-        method: 'GET',
-        headers: {
-          'x-apikey': apiKey
-        }
-      });
-
-      if (!urlResponse.ok) {
-        throw new Error(`Error getting URL report: ${urlResponse.status} - ${urlResponse.statusText}`);
-      }
-
-      const urlData = await urlResponse.json();
-      setResults(urlData);
+      await fetchVirusTotalData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze URL');
     } finally {
@@ -369,41 +340,67 @@ const VirusTotalScanner: React.FC = () => {
   };
 
   const renderDomainResults = (data: DomainResponse) => {
+    const attributes = data.data?.attributes || {};
+
     return (
-      <>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="p-3 bg-gray-50 rounded border border-gray-200">
-            <div className="text-sm text-gray-500">Registrar</div>
-            <div className="font-mono text-sm">{data.data.attributes.registrar || 'N/A'}</div>
-          </div>
-          <div className="p-3 bg-gray-50 rounded border border-gray-200">
-            <div className="text-sm text-gray-500">Creation Date</div>
-            <div className="font-mono text-sm">
-              {data.data.attributes.creation_date ? 
-                new Date(data.data.attributes.creation_date * 1000).toLocaleDateString() : 
-                'N/A'}
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="p-3 bg-gray-50 rounded border border-gray-200">
+              <div className="text-sm text-gray-500">Registrar</div>
+              <div className="font-mono text-sm">{attributes.registrar || 'N/A'}</div>
+            </div>
+            <div className="p-3 bg-gray-50 rounded border border-gray-200">
+              <div className="text-sm text-gray-500">Creation Date</div>
+              <div className="font-mono text-sm">
+                {attributes.creation_date ?
+                    new Date(attributes.creation_date * 1000).toLocaleDateString() :
+                    'N/A'}
+              </div>
+            </div>
+            <div className="p-3 bg-gray-50 rounded border border-gray-200">
+              <div className="text-sm text-gray-500">Last Update</div>
+              <div className="font-mono text-sm">
+                {attributes.last_update_date ?
+                    new Date(attributes.last_update_date * 1000).toLocaleDateString() :
+                    'N/A'}
+              </div>
+            </div>
+            <div className="p-3 bg-gray-50 rounded border border-gray-200">
+              <div className="text-sm text-gray-500">Detection Ratio</div>
+              <div className="flex items-center">
+                <span className={`inline-block w-4 h-4 rounded-full mr-2 ${getDetectionColor()}`}></span>
+                <span className="font-medium">
+              {getDetectionRatio()} (
+                  {attributes.last_analysis_stats?.malicious || 0} malicious)
+            </span>
+              </div>
             </div>
           </div>
-          <div className="p-3 bg-gray-50 rounded border border-gray-200">
-            <div className="text-sm text-gray-500">Last Update</div>
-            <div className="font-mono text-sm">
-              {data.data.attributes.last_update_date ? 
-                new Date(data.data.attributes.last_update_date * 1000).toLocaleDateString() : 
-                'N/A'}
-            </div>
-          </div>
-          <div className="p-3 bg-gray-50 rounded border border-gray-200">
-            <div className="text-sm text-gray-500">Detection Ratio</div>
-            <div className="flex items-center">
-              <span className={`inline-block w-4 h-4 rounded-full mr-2 ${getDetectionColor()}`}></span>
-              <span className="font-medium">
-                {getDetectionRatio()} (
-                {data.data.attributes.last_analysis_stats.malicious} malicious)
-              </span>
-            </div>
-          </div>
-        </div>
-      </>
+
+          {attributes.last_dns_records && attributes.last_dns_records.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-lg font-medium mb-3">DNS Records</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {attributes.last_dns_records.map((record, index) => (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.type}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">{record.value}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          )}
+        </>
     );
   };
 
@@ -420,7 +417,7 @@ const VirusTotalScanner: React.FC = () => {
       } else if (scanType === 'url' && 'url' in results.data.attributes) {
         resultTitle = 'URL Analysis Results';
         resultContent = renderUrlResults(results as UrlResponse);
-      } else if (scanType === 'domain' && 'registrar' in results.data.attributes) {
+      } else if (scanType === 'domain') {
         resultTitle = `Domain Analysis: ${input}`;
         resultContent = renderDomainResults(results as DomainResponse);
       }
@@ -431,10 +428,10 @@ const VirusTotalScanner: React.FC = () => {
         <div className="p-4 bg-gray-50 border-b border-gray-200">
           <h2 className="text-xl font-semibold">{resultTitle}</h2>
         </div>
-        
+
         <div className="p-4">
           {resultContent}
-          
+
           {/* Common scan results table */}
           {'data' in results && 'attributes' in results.data && 'last_analysis_results' in results.data.attributes && (
             <>
@@ -584,5 +581,3 @@ const VirusTotalScanner: React.FC = () => {
     </div>
   );
 };
-
-export default VirusTotalScanner;
