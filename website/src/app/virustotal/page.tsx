@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-localStorage.setItem("virusTotalApiKey", "ebc3aa96b22e1cb1c1223acb0c72ddc09f766720cdfc580f0b514ec136161b5a")
+import React, { useState } from 'react';
+const apiKey = process.env.VIRUSTOTAL_API_KEY || '';
+
 // Shared types
 interface ScanStats {
   harmless: number;
@@ -67,20 +68,10 @@ type ScanResponse = FileResponse | UrlResponse | DomainResponse;
 
 const VirusTotalScanner: React.FC = () => {
   const [input, setInput] = useState<string>('');
-  const [apiKey, setApiKey] = useState<string>('');
   const [results, setResults] = useState<ScanResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [saveApiKey, setSaveApiKey] = useState<boolean>(false);
   const [scanType, setScanType] = useState<ScanType>('file');
-
-  // Load API key from localStorage if available
-  useEffect(() => {
-    const savedApiKey = localStorage.getItem('virusTotalApiKey');
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-    }
-  }, []);
 
   const isValidHash = (value: string): boolean => {
     // Check if the input is a valid MD5, SHA-1, or SHA-256 hash
@@ -107,11 +98,6 @@ const VirusTotalScanner: React.FC = () => {
   };
 
   const validateInput = (): boolean => {
-    if (!apiKey.trim()) {
-      setError('API key is required');
-      return false;
-    }
-
     if (!input.trim()) {
       setError('Input is required');
       return false;
@@ -144,11 +130,6 @@ const VirusTotalScanner: React.FC = () => {
   const fetchVirusTotalData = async (): Promise<void> => {
     if (!validateInput()) {
       return;
-    }
-
-    // Save API key if checkbox is checked
-    if (saveApiKey) {
-      localStorage.setItem('virusTotalApiKey', apiKey);
     }
 
     setLoading(true);

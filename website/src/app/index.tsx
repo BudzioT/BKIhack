@@ -1,4 +1,3 @@
-// File: pages/index.tsx
 import type { NextPage } from 'next';
 import CyberSecurityNewsSlider from './CyberSecurityNewsSlider';
 

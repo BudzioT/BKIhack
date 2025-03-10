@@ -11,6 +11,7 @@ export default function Landing() {
     const [userInput, setUserInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const chatEndRef = useRef(null);
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
     
     // Auto-scroll for chat
     useEffect(() => {
@@ -33,9 +34,6 @@ export default function Landing() {
         setIsLoading(true);
         
         try {
-            // Call Groq API
-            const GROQ_API_KEY = "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";
-            
             const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: "POST",
                 headers: {

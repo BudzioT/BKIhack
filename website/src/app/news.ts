@@ -18,7 +18,6 @@ export default async function handler(
   res: NextApiResponse<NewsItem[] | { error: string }>
 ) {
   try {
-    // The Hacker News RSS feed URL
     const rssUrl = 'https://feeds.feedburner.com/TheHackersNews';
     
     const response = await axios.get(rssUrl);
@@ -42,8 +41,8 @@ export default async function handler(
       
       // Extract plain text from HTML description
       const description = item.description
-        .replace(/<[^>]*>?/gm, '') // Remove HTML tags
-        .substring(0, 200) + '...'; // Limit to 200 chars
+        .replace(/<[^>]*>?/gm, '')
+        .substring(0, 200) + '...';
       
       return {
         id: item.guid._ || item.guid,
