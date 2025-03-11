@@ -108,7 +108,7 @@ export default function Landing() {
                         <div>
                             <h3 className="text-2xl font-semibold">AI cybersecurity training</h3>
                             <p className="">Get cybersecurity advice and assistance from our AI helper</p>
-                            <Link href="https://github.com/BudzioT/BKIhack/releases/tag/extension">
+                            <Link href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/ff56aab2ef26dfd42aaad1d5aff9b44feaf4bd17_image__3_.png">
                                 <input type="button" value="Get browser extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
@@ -128,7 +128,7 @@ export default function Landing() {
                         <div>
                             <h3 className="text-2xl font-semibold">E-mail checker</h3>
                             <p className="">Check e-mail for hamfull or spam contents</p>
-                            <Link href="https://github.com/BudzioT/BKIhack/releases/tag/extension">
+                            <Link href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/a5692dc7162ff6718068e2c4eb7657db93034539_image__4_.png">
                                 <input type="button" value="Get browser extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
