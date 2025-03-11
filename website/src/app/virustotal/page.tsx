@@ -581,3 +581,65 @@ export default function VirusTotalScanner() {
     </div>
   );
 };
+
+// Shared types
+interface ScanStats {
+  harmless: number;
+  malicious: number;
+  suspicious: number;
+  undetected: number;
+  timeout: number;
+}
+
+interface ScanResult {
+  engine_name: string;
+  category: string;
+  result: string | null;
+  method: string;
+  engine_update: string;
+}
+
+// Response interfaces for different scan types
+interface FileResponse {
+  data: {
+    attributes: {
+      last_analysis_results: Record<string, ScanResult>;
+      last_analysis_stats: ScanStats;
+      meaningful_name: string;
+      md5: string;
+      sha1: string;
+      sha256: string;
+    };
+  };
+}
+
+interface UrlResponse {
+  data: {
+    attributes: {
+      last_analysis_results: Record<string, ScanResult>;
+      last_analysis_stats: ScanStats;
+      url: string;
+      last_final_url: string;
+      title: string;
+      last_http_response_code: number;
+      last_http_response_content_length: number;
+      last_analysis_date: number;
+    };
+  };
+}
+
+interface DomainResponse {
+  data: {
+    attributes: {
+      last_analysis_results: Record<string, ScanResult>;
+      last_analysis_stats: ScanStats;
+      last_dns_records: Record<string, any>[];
+      creation_date: number;
+      last_update_date: number;
+      registrar: string;
+      reputation: number;
+      last_analysis_date: number;
+    };
+  };
+}
+
