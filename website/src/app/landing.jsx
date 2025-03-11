@@ -86,7 +86,7 @@ export default function Landing() {
                     <p className="text-2xl py-4">Your place to stay safe on the web</p>
                     <div>
                         <a href="#tools" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" >Try it out</a>
-                        <a className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" >Get chrome extension</a>
+                        <a href="https://github.com/BudzioT/BKIhack/releases/tag/extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-400 transition-all hover:bg-amber-400 hover:text-gray-900 hover:border-amber-400 mx-2" >Get browser extension</a>
                     </div>
                 </div>
                 <div className="flex flex-col justify-center place-items-center w-4/5">
@@ -110,15 +110,10 @@ export default function Landing() {
                     </div>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
-                            <h3 className="text-2xl font-semibold">AI chat</h3>
+                            <h3 className="text-2xl font-semibold">AI cybersecurity training</h3>
                             <p className="">Get cybersecurity advice and assistance from our AI helper</p>
-                            <Link href="/">
-                            <input 
-                                type="button" 
-                                value="Try it out" 
-                                className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8"
-                                onClick={toggleIsVisible} 
-                            />
+                            <Link href="https://github.com/BudzioT/BKIhack/releases/tag/extension">
+                                <input type="button" value="Get browser extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
                         </div>
                         <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
@@ -126,7 +121,7 @@ export default function Landing() {
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
                             <h3 className="text-2xl font-semibold">Virus scanner</h3>
-                            <p className="">See metadata associated with a file you upload and delete it</p>
+                            <p className="">Protect yourself by checking files and urls for viruses</p>
                             <Link href="/virustotal">
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
@@ -135,8 +130,18 @@ export default function Landing() {
                     </div>
                     <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
                         <div>
-                            <h3 className="text-2xl font-semibold">Password strengh checker</h3>
-                            <p className="">See metadata associated with a file you upload and delete it</p>
+                            <h3 className="text-2xl font-semibold">E-mail checker</h3>
+                            <p className="">Check e-mail for hamfull or spam contents</p>
+                            <Link href="https://github.com/BudzioT/BKIhack/releases/tag/extension">
+                                <input type="button" value="Get browser extension" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
+                            </Link>
+                        </div>
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9192603388ad9f429d730c600d23563f9af13b7f_image.png" alt="" className="rounded-lg" />
+                    </div>
+                    <div className="h-50 w-4/5 rounded-xl border-3 border-amber-400 flex justify-between my-5 mx-auto p-5">
+                        <div>
+                            <h3 className="text-2xl font-semibold">Password strengh checker and generator</h3>
+                            <p className="">Check the strength of your password and generate new ones</p>
                             <Link href="/pass">
                             <input type="button" value="Try it out" className="w-fit px-4 py-2 rounded-4xl border-2 font-semibold bg-gray-900 cursor-pointer text-amber-600 transition-all hover:bg-amber-600 hover:text-gray-900 hover:border-amber-600 mx-2 my-8" />
                             </Link>
