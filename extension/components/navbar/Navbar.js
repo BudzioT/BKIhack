@@ -5,7 +5,8 @@ import EmailPage from "../emails/EmailPage";
 import SupportPage from "../support/SupportPage";
 import AiTest from "../aiTest/AiTest";
 import VirusCheck from "../virusCheck/virusCheck";
-import EmailRep from "../emailRep/EmailRep";
+import NetworkTrafficVisualizer from "../networkTraffic/NetworkTraffic";
+
 
 export default function Navbar() {
     const [showFeatures, setShowFeatures] = useState(false);
@@ -14,18 +15,18 @@ export default function Navbar() {
     const [showSupport, setShowSupport] = useState(false);
     const [showAITest, setShowAITest] = useState(false);
     const [showVirusCheck, setShowVirusCheck] = useState(false);
-    const [showEmailRep, setShowEmailRep] = useState(false);
+    const [showNetworkTraffic, setShowNetworkTraffic] = useState(false);
 
     return (
         <>
             <div id="navbar">
                 <span id="header_name" className="nav_element" onClick={goToMain}>VanishHive</span>
                 <span className="nav_element" onClick={goToAll}>All</span>
-                <span className="nav_element" onClick={goToEmail}>Email check</span>
-                <span className="nav_element" k onClick={goToEmailRep}>Email rep</span>
-                <span className="nav_element" onClick={goToVirusCheck}>Virus check</span>
+                <span className="nav_element" onClick={goToEmail}>Email chk</span>
+                <span className="nav_element" onClick={goToVirusCheck}>Virus chk</span>
                 <span className="nav_element" onClick={goToSupport}>Support</span>
-                <span className="nav_element" onClick={goToAITest}>AI Test</span>
+                <span className="nav_element" onClick={goToAITest}>Tests</span>
+                <span className="nav_element" onClick={goToNetworkTraffic}>Network</span>
             </div>
 
             {showFeatures && <Features />}
@@ -34,7 +35,7 @@ export default function Navbar() {
             {showSupport && <SupportPage />}
             {showAITest && <AiTest />}
             {showVirusCheck && <VirusCheck />}
-            {showEmailRep && <EmailRep />}
+            {showNetworkTraffic && <NetworkTrafficVisualizer />}
         </>
     );
 
@@ -44,7 +45,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowFeatures(true);
     }
 
@@ -54,7 +55,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowMain(true);
     }
 
@@ -64,7 +65,7 @@ export default function Navbar() {
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowEmail(true);
     }
 
@@ -74,7 +75,7 @@ export default function Navbar() {
         setShowEmail(false);
         setShowAITest(false);
         setShowVirusCheck(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowSupport(true);
     }
 
@@ -84,7 +85,7 @@ export default function Navbar() {
         setShowEmail(false);
         setShowSupport(false);
         setShowVirusCheck(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowAITest(true);
     }
 
@@ -94,17 +95,17 @@ export default function Navbar() {
         setShowEmail(false);
         setShowSupport(false);
         setShowAITest(false);
-        setShowEmailRep(false);
+        setShowNetworkTraffic(false);
         setShowVirusCheck(true);
     }
 
-    function goToEmailRep() {
+    function goToNetworkTraffic() {
         setShowFeatures(false);
         setShowMain(false);
         setShowEmail(false);
         setShowSupport(false);
         setShowAITest(false);
         setShowVirusCheck(false);
-        setShowEmailRep(true);
+        setShowNetworkTraffic(true);
     }
 }

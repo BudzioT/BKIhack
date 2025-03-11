@@ -21,10 +21,6 @@ const News = () => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        // Note: This is a mock implementation - in a real app, you'd need a server-side 
-        // component or API that can fetch and parse the content from The Hacker News
-        // as direct web scraping from the client side isn't possible due to CORS restrictions
-        
         // Simulated response with placeholder data
         const mockData: NewsItem[] = [
           {

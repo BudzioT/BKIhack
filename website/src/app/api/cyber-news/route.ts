@@ -14,7 +14,6 @@ type NewsItem = {
 
 export async function GET() {
   try {
-    // The Hacker News RSS feed URL
     const rssUrl = 'https://feeds.feedburner.com/TheHackersNews';
     
     const response = await axios.get(rssUrl);
@@ -30,7 +29,7 @@ export async function GET() {
       // Extract image URL from the content if available
       let imageUrl = null;
       
-      // First, try to get image from content:encoded (which usually contains the full article content)
+      // Try to get image from content:encoded
       if (item['content:encoded']) {
         const contentMatch = item['content:encoded'].match(/<img[^>]+src="([^">]+)"/);
         if (contentMatch) {
