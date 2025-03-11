@@ -19,12 +19,6 @@
   }
 }
 
-/* body {
-  background: var(--background);
-  color: #000;
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
 .py-2.px-3.font-medium.text-sm{
   width: 250px !important;
 }
@@ -39,11 +33,6 @@
   scroll-padding: 100px;
 }
 
-/* body {
-  background-color: #efefef;
-  font-family: arial, cursive;
-} */
-
 .artboard {
   position: fixed;
   transform: translateX(75%) translateY(75%);
@@ -55,6 +44,7 @@
   height: 500px;
   margin: 5% auto 0 auto;
   /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); */
+  transform-origin: bottom right;
 }
 
 .artboard .beeShadow {
